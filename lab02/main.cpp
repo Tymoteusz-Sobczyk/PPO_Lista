@@ -1,22 +1,36 @@
-#include <iostream>
-#include <string>
+#include "Player.cpp"
 
 int main()
 {
-    std::string question = "Ctare your age: ";
-    std::string question2 = "State your full legal name: ";
-    question[0] = 'S';
-    question.at(3) = 't';
-    std::cout << "Hello World!" << "\n";
+    // seed for rand() function
+    srand(time(0));
 
-    std::cout << question2;
-    std::string fullName;
-    std::getline(std::cin, fullName);
+    vector<Player> players;
 
-    std::cout << question;
-    int x;
-    std::cin >> x;
+    for (int i = 0; i < 30; i++)
+    {
+        Player player;
+        player.name = getRandomName();
 
-    std::cout << "\nHeloo " << fullName << "\nYour age will soon be " << ++x << "\n";
+        // determine value for hasTitle attribute
+        player.hasTitle = rand() % 2 == 0 ? true : false;
+        if (player.hasTitle)
+        {
+            player.title = getRandomTitle();
+        }
+
+        // same thing, but for status
+        player.status = rand() % 2 == 0 ? true : false;
+
+        players.push_back(player);
+    }
+
+    for (Player player : players)
+    {
+        if (player.status)
+        {
+            cout << player.indetify() << "\n";
+        }
+    }
     return 0;
 }
