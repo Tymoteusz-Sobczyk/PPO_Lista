@@ -28,12 +28,28 @@ public:
         player.takeHit(hitPoints);
 
         return hitPoints;
-    };
+    }
 
-    void takeHit(int hitPoints)
+    void takeHit(int &hitPoints)
     {
+        if (rand() % 6 <= 3)
+        {
+            std::cout << this->name << " takes defensive stance\n";
+            hitPoints = parry(hitPoints);
+        }
         this->healthPoints = this->healthPoints - hitPoints;
-    };
+        if (this->healthPoints < 0)
+        {
+            this->healthPoints = 0;
+        }
+    }
+
+    int parry(int &hitPoints)
+    {
+        int modifier = rand() % 5 + 1;
+        hitPoints -= hitPoints / modifier;
+        return hitPoints;
+    }
 
     bool isDead()
     {
@@ -69,9 +85,18 @@ void sortPlayers(std::vector<Player> &players)
 
 void showPlayers(std::vector<Player> &players)
 {
+    sortPlayers(players);
     std::cout << "\n----------------------------------------------\n";
     for (Player player : players)
     {
         std::cout << "| " << player.name << " [" << player.getHealth() << "]\n";
     }
+    std::cout << "\n\n";
 };
+
+std::string getRandomFullName()
+{
+    static std::string names[] = {"Luke", "Villentretenmerth", "Geralt", "Bilbo", "Charlie", "Steve", "Matthew", "Johnny", "Arthur", "Kyle"};
+    static std::string surnames[] = {"Skywalker", "", "of Rivia", "Baggins", "Kirk", "Rogers", "Murdock", "Silverhand", "Morgan", "Crane"};
+    return names[rand() % names->size()] + " " + surnames[rand() % surnames->size()];
+}
