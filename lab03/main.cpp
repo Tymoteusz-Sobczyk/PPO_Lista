@@ -2,8 +2,7 @@
 #include <stdlib.h>
 
 #define NUMBER_OF_PLAYERS 10
-// To do:
-// gracz ma szansę na obronę przed atakiem
+
 int main()
 {
     system("cls");
