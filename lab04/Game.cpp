@@ -7,7 +7,7 @@
 class Game
 {
 private:
-    const std::vector<Player> players = {};
+    std::vector<Player> players = {};
     const Dice dice;
     const int max_fields;
     const int max_turn;
@@ -32,7 +32,7 @@ public:
     void run()
     {
         const Player *winner = nullptr;
-
+        int alive_players = players.size();
         while (winner == nullptr)
         {
             std::cout << "----------------------------------\n";
@@ -40,6 +40,11 @@ public:
 
             for (size_t i = 0; i < players.size(); ++i)
             {
+                if (players[i].getHeatlhPoints() <= 0)
+                {
+                    continue;
+                }
+
                 int result = this->dice.roll();
                 int position = this->fields[i] += result;
 
@@ -56,8 +61,30 @@ public:
                     winner = &players[i];
                     break;
                 }
-            }
 
+                if (position % 7 == 0)
+                {
+                    result = this->dice.roll();
+                    players[i].takeHit(result);
+                }
+
+                if (players[i].getHeatlhPoints() <= 0)
+                {
+                    alive_players--;
+                }
+            }
+            if (alive_players == 1)
+            {
+                for (Player player : players)
+                {
+                    if (player.getHeatlhPoints() > 0)
+                    {
+                        std::cout << "PLayer " << player.getName() << " won!\n";
+                        winner = &player;
+                        break;
+                    }
+                }
+            }
             if (current_turn == max_turn)
             {
                 int winning_player = 0;
