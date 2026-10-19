@@ -2,11 +2,17 @@
 
 class Player
 {
-public:
-    std::string name;
+private:
+    const std::string name;
+    int healthPoints = 50;
 
-    Player(std::string name)
+public:
+    Player(std::string name) : name(name)
     {
-        this->name = name;
+    }
+
+    std::string getName() const
+    {
+        return this->name;
     }
 };

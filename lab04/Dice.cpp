@@ -3,9 +3,23 @@
 
 class Dice
 {
+private:
+    const int faces;
+
 public:
-    int roll()
+    Dice() : Dice(6)
     {
-        return rand() % 6 + 1;
+    }
+
+    // This is called member initializer list - initializes constant attributes
+    // with values passed by user
+    // !!! This is the only way to initialize a constant value of an object
+    Dice(int faces) : faces(faces)
+    {
+    }
+
+    int roll() const
+    {
+        return rand() % faces + 1;
     }
 };

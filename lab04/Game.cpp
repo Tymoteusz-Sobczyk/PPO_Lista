@@ -6,44 +6,73 @@
 
 class Game
 {
-public:
+private:
+    const std::vector<Player> players = {};
+    const Dice dice;
+    const int max_fields;
+    const int max_turn;
+    int current_turn = 1;
     std::unordered_map<int, int> fields = {};
-    std::vector<Player> players = {};
-    Dice dice;
 
-    void prepareGame()
+public:
+    Game(std::vector<Player> players, Dice dice, int max_fields, int max_turn) : players(players), dice(dice), max_fields(max_fields), max_turn(max_turn)
     {
         for (size_t i = 0; i < players.size(); ++i)
         {
-            const Player &player = players[i]; // Accessing player if needed
             this->fields[i] = 0;
         }
     }
 
+    Game(std::vector<Player> players, Dice dice) : Game(players, dice, 100, -1) {}
+
+    Game(std::vector<Player> players, Dice dice, int max_fields) : Game(players, dice, max_fields, -1) {}
+
+    Game(std::vector<Player> players, int max_turn, Dice dice) : Game(players, dice, 100, max_turn + 1) {}
+
     void run()
     {
-        Player *winner = nullptr;
+        const Player *winner = nullptr;
 
         while (winner == nullptr)
         {
+            std::cout << "----------------------------------\n";
+            std::cout << current_turn++ << ". turn\n";
+
             for (size_t i = 0; i < players.size(); ++i)
             {
                 int result = this->dice.roll();
                 int position = this->fields[i] += result;
 
-                if (position >= 40)
+                if (position >= max_fields)
                 {
-                    position = 40;
+                    position = max_fields;
                 }
 
-                std::cout << players[i].name << " rolled " << result << ". Now is on position " << position << "\n\n";
+                std::cout << players[i].getName() << " rolled " << result << ". Now is on position " << position << "\n\n";
 
-                if (position >= 40)
+                if (position >= max_fields)
                 {
-                    std::cout << "PLayer " << players[i].name << " won!\n";
+                    std::cout << "PLayer " << players[i].getName() << " won!\n";
                     winner = &players[i];
                     break;
                 }
+            }
+
+            if (current_turn == max_turn)
+            {
+                int winning_player = 0;
+                int max_fields = 0;
+                for (size_t i = 0; i < players.size(); ++i)
+                {
+                    if (max_fields < this->fields[i])
+                    {
+                        max_fields = this->fields[i];
+                        winning_player = i;
+                    }
+                }
+                std::cout << "PLayer " << players[winning_player].getName() << " won!\n";
+                winner = &players[winning_player];
+                break;
             }
         }
     }
