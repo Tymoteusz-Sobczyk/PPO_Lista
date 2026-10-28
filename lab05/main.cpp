@@ -1,14 +1,25 @@
-#include "Truck.cpp"
+#include "include/Truck.h"
+#include "include/Camper.h"
+#include "include/PriceList.h"
+#include "include/Car.h"
 #include <iostream>
 #include <vector>
-// 78 118
 
-std::vector<Car> vehicles = {Car("Volkswagen Passat"), Truck("Volkswagen Transporter")};
 int main()
 {
-    for (Car vehicle : vehicles)
+    PriceList price_list;
+
+    Car passat("Volkswagen Passat", "DBL 6767");
+    Truck transporter("Volkswagen Transporter", "DWL 355A");
+    Camper camper("Breaking Bad", "PZR FR33");
+    Camper camper2("Kamper markowy", "GD 12345");
+
+    std::vector<const Car *>
+        vehicles = {&passat, &transporter, &camper, &camper2};
+
+    for (const Car *vehicle : vehicles)
     {
-        std::cout << std::string(vehicle.getName()) << ": " << vehicle.getPayment() << " zł\n";
+        std::cout << vehicle->getLicensePlate() << " | " << vehicle->getName() << ": " << price_list.getPayment(*vehicle) << " zł\n";
     }
     return 0;
 }
