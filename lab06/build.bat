@@ -1,1 +1,1 @@
-g++ -I include main.cpp src/*.cpp -o main
+g++ -g -I include main.cpp src/*.cpp -o main 

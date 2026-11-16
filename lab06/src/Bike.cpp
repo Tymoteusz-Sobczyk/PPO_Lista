@@ -2,5 +2,10 @@
 
 std::string Bike::identify() const
 {
-    return "bike";
+    return "Bike";
 }
+
+std::string Bike::getClass() const
+{
+    return "Bike";
+};
